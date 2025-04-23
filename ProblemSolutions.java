@@ -10,7 +10,9 @@
  *
  ********************************************************************/
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ProblemSolutions {
 
@@ -132,7 +134,54 @@ public class ProblemSolutions {
         // TO CODE WITH A SPACE COMPLEXITY OF O(N LOG N), WHICH IS FINE FOR PURPOSES
         // OF THIS PROGRAMMING EXERCISES.
 
-        return;
+        List<Integer> leftPart = new ArrayList<>();
+        List<Integer> rightPart = new ArrayList<>();
+
+        for (int i = left; i <= mid; i++)
+            leftPart.add(arr[i]);
+        for (int i = mid + 1; i <= right; i++)
+            rightPart.add(arr[i]);
+
+        List<Integer> result = new ArrayList<>();
+        int i = 0, j = 0;
+
+        // Merge the two sorted sublists
+        while (i < leftPart.size() && j < rightPart.size()) {
+            if (leftPart.get(i) <= rightPart.get(j)) {
+                result.add(leftPart.get(i++));
+            } else {
+                result.add(rightPart.get(j++));
+            }
+        }
+        while (i < leftPart.size())
+            result.add(leftPart.get(i++));
+        while (j < rightPart.size())
+            result.add(rightPart.get(j++));
+
+        // Split into divisible and non-divisible parts
+        List<Integer> divisible = new ArrayList<>();
+        List<Integer> nonDivisible = new ArrayList<>();
+
+        for (int num : result) {
+            if (num % k == 0)
+                divisible.add(num);
+            else
+                nonDivisible.add(num);
+        }
+
+        // Sort both parts to maintain order
+        // (divisible is already sorted due to merge, but sort again for safety)
+        divisible.sort(Integer::compareTo);
+        nonDivisible.sort(Integer::compareTo);
+
+        // Write back into original array
+        int index = left;
+        for (int num : divisible)
+            arr[index++] = num;
+        for (int num : nonDivisible)
+            arr[index++] = num;
+
+        // return;
 
     }
 
